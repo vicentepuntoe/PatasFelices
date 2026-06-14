@@ -44,24 +44,6 @@ export const howItWorksSteps = [
   },
 ] as const
 
-export const helpedAnimalsExamples = [
-  {
-    src: 'https://images.unsplash.com/photo-1589923188900-56dae9dad9f0?w=800&q=80',
-    alt: 'Perro comiendo de su plato en el refugio',
-    caption: 'Ración diaria cubierta con aportes del libro de transparencia.',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1544561870-8b948717e2b3?w=800&q=80',
-    alt: 'Varios perros recibiendo alimento en bandejas',
-    caption: 'Alimento comprado tras donaciones confirmadas vía Khipu (ejemplo).',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=800&q=80',
-    alt: 'Cachorro golden comiendo con tranquilidad',
-    caption: 'Cada transferencia registrada puede traducirse en platos como este.',
-  },
-] as const
-
 /** Textos e imágenes de la página de gracias tras donar (por estado del pago). */
 export const thankYouMoments = {
   loading: {

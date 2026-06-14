@@ -173,8 +173,17 @@ p {
 
 .helped-animals-gallery {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 960px) {
+  .helped-animals-gallery {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .helped-animals-note {

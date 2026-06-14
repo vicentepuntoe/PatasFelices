@@ -1,4 +1,23 @@
-import { helpedAnimalsExamples } from '../data/content'
+const helpedAnimalsPhotos = [
+  {
+    id: 'cachorros-racion',
+    src: '/images/animales-ayudados/cachorros-alimentandose.png',
+    alt: 'Cachorros golden comiendo juntos de un plato en el refugio',
+    caption: 'Ración diaria cubierta con aportes del libro de transparencia.',
+  },
+  {
+    id: 'perros-patio',
+    src: '/images/animales-ayudados/perros-comiendo.png',
+    alt: 'Varios perros comiendo alimento en el patio del refugio',
+    caption: 'Alimento comprado tras donaciones confirmadas vía Khipu (ejemplo).',
+  },
+  {
+    id: 'alimentacion-calle',
+    src: '/images/animales-ayudados/mujer-alimentando-perro.png',
+    alt: 'Persona alimentando a un perro callejero en la acera',
+    caption: 'También llegamos a quienes esperan una ración en la calle (ejemplo).',
+  },
+] as const
 
 export function HelpedAnimals() {
   return (
@@ -14,20 +33,22 @@ export function HelpedAnimals() {
             publicados.
           </p>
         </div>
-        <div className="helped-animals-gallery">
-          {helpedAnimalsExamples.map((item) => (
-            <figure key={item.src} className="gallery-item">
-              <img
-                src={item.src}
-                alt={item.alt}
-                loading="lazy"
-                width={400}
-                height={300}
-              />
-              <figcaption>{item.caption}</figcaption>
-            </figure>
+        <ul className="helped-animals-gallery">
+          {helpedAnimalsPhotos.map((item) => (
+            <li key={item.id}>
+              <figure className="gallery-item">
+                <img
+                  src={item.src}
+                  alt={item.alt}
+                  loading="lazy"
+                  width={400}
+                  height={300}
+                />
+                <figcaption>{item.caption}</figcaption>
+              </figure>
+            </li>
           ))}
-        </div>
+        </ul>
         <p className="helped-animals-note">
           Cuando publiquemos gastos en alimento, podremos enlazar cada comprobante
           con historias como estas.
