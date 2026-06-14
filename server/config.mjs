@@ -33,7 +33,10 @@ export function loadConfig() {
   }
 
   const supabaseUrl = process.env.SUPABASE_URL?.trim() || ''
-  const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || ''
+  const supabaseServiceRoleKey =
+    process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() ||
+    process.env.SUPABASE_SECRET_KEY?.trim() ||
+    ''
 
   const allowedOrigins = new Set([
     appUrl,

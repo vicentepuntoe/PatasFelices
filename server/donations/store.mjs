@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import { isKhipuPaymentConfirmedStatus } from './khipuPayment.mjs'
 
 function mapRow(row) {
   return {
@@ -11,6 +12,10 @@ function mapRow(row) {
     khipuStatus: row.khipu_status,
     createdAt: row.created_at,
   }
+}
+
+function isConfirmedRow(row) {
+  return isKhipuPaymentConfirmedStatus(row.khipu_status ?? row.khipuStatus)
 }
 
 export function createSupabaseDonationStore({ url, serviceRoleKey }) {
@@ -47,7 +52,7 @@ export function createSupabaseDonationStore({ url, serviceRoleKey }) {
         .limit(limit)
 
       if (error) throw error
-      const donations = (data ?? []).map(mapRow)
+      const donations = (data ?? []).filter(isConfirmedRow).map(mapRow)
       const totalAmount = donations.reduce((sum, d) => sum + d.amount, 0)
       return {
         count: donations.length,
@@ -56,17 +61,15 @@ export function createSupabaseDonationStore({ url, serviceRoleKey }) {
       }
     },
     async stats() {
-      const { count, error: countError } = await supabase
+      const { data, error } = await supabase
         .from('donations')
-        .select('*', { count: 'exact', head: true })
+        .select('amount, khipu_status')
 
-      if (countError) throw countError
-
-      const { data, error } = await supabase.from('donations').select('amount')
       if (error) throw error
-      const totalAmount = (data ?? []).reduce((sum, row) => sum + row.amount, 0)
+      const confirmed = (data ?? []).filter(isConfirmedRow)
+      const totalAmount = confirmed.reduce((sum, row) => sum + row.amount, 0)
 
-      return { count: count ?? 0, totalAmount }
+      return { count: confirmed.length, totalAmount }
     },
   }
 }
@@ -104,12 +107,16 @@ export function createMemoryDonationStore() {
       return record
     },
     async listPublic({ limit = 40 } = {}) {
-      const donations = getMemoryRows().slice(0, limit)
+      const donations = getMemoryRows()
+        .filter((r) => isKhipuPaymentConfirmedStatus(r.khipuStatus))
+        .slice(0, limit)
       const totalAmount = donations.reduce((sum, d) => sum + d.amount, 0)
       return { count: donations.length, totalAmount, donations }
     },
     async stats() {
-      const rows = getMemoryRows()
+      const rows = getMemoryRows().filter((r) =>
+        isKhipuPaymentConfirmedStatus(r.khipuStatus),
+      )
       return {
         count: rows.length,
         totalAmount: rows.reduce((sum, d) => sum + d.amount, 0),
