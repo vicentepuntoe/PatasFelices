@@ -1,7 +1,7 @@
 const DEFAULT_APP_URL = 'http://localhost:5173'
 const DEFAULT_PORT = 3001
 const DEFAULT_MIN_AMOUNT = 1000
-const DEFAULT_MAX_AMOUNT = 5_000_000
+const DEFAULT_MAX_AMOUNT = 100_000
 
 function parsePositiveInt(value, fallback) {
   if (value === undefined || value === '') return fallback

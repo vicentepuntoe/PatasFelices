@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { donationPresets } from '../data/content'
+import { DONATION_MAX_CLP, DONATION_MIN_CLP } from '../data/donationLimits'
 import { createKhipuPayment } from '../services/khipu'
 import { siteLegal } from '../data/siteLegal'
 
@@ -24,14 +25,34 @@ export function DonateSection() {
     ? Number(customAmount.replace(/\D/g, ''))
     : selectedAmount
 
+  const amountInRange =
+    Number.isFinite(effectiveAmount) &&
+    effectiveAmount >= DONATION_MIN_CLP &&
+    effectiveAmount <= DONATION_MAX_CLP
+
+  function handleCustomAmountChange(raw: string) {
+    const digits = raw.replace(/\D/g, '')
+    if (!digits) {
+      setCustomAmount('')
+      return
+    }
+    const capped = Math.min(DONATION_MAX_CLP, Number(digits))
+    setCustomAmount(String(capped))
+  }
+
   const selectedPreset = donationPresets.find((p) => p.amount === selectedAmount)
 
   async function handleDonate(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
 
-    if (!Number.isFinite(effectiveAmount) || effectiveAmount < 1000) {
-      setError('El monto mínimo es $1.000 CLP.')
+    if (!Number.isFinite(effectiveAmount) || effectiveAmount < DONATION_MIN_CLP) {
+      setError(`El monto mínimo es ${formatCLP(DONATION_MIN_CLP)}.`)
+      return
+    }
+
+    if (effectiveAmount > DONATION_MAX_CLP) {
+      setError(`El monto máximo por donación es ${formatCLP(DONATION_MAX_CLP)}.`)
       return
     }
 
@@ -107,9 +128,14 @@ export function DonateSection() {
               inputMode="numeric"
               placeholder="Ej: 20000"
               value={customAmount}
-              onChange={(e) => setCustomAmount(e.target.value)}
+              onChange={(e) => handleCustomAmountChange(e.target.value)}
+              aria-describedby="donate-amount-limits"
             />
           </label>
+          <p id="donate-amount-limits" className="amount-hint">
+            Mínimo {formatCLP(DONATION_MIN_CLP)} · máximo {formatCLP(DONATION_MAX_CLP)} por
+            donación.
+          </p>
           <label className="field">
             <span>Tu nombre (opcional)</span>
             <input
@@ -133,9 +159,7 @@ export function DonateSection() {
           <p className="donate-total">
             Total a donar:{' '}
             <strong>
-              {Number.isFinite(effectiveAmount) && effectiveAmount >= 1000
-                ? formatCLP(effectiveAmount)
-                : '—'}
+              {amountInRange ? formatCLP(effectiveAmount) : '—'}
             </strong>
           </p>
           <label className="field field--checkbox">
@@ -180,7 +204,11 @@ export function DonateSection() {
           <button
             type="submit"
             className="btn btn--primary btn--large btn--block"
-            disabled={loading}
+            disabled={
+              loading ||
+              !acceptedLegal ||
+              !amountInRange
+            }
           >
             {loading ? 'Redirigiendo a Khipu…' : 'Continuar con Khipu'}
           </button>
