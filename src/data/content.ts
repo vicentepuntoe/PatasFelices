@@ -1,4 +1,4 @@
-import type { DonationPreset, TransparencyEntry } from '../types/donation'
+import type { DonationPreset } from '../types/donation'
 
 export const donationPresets: DonationPreset[] = [
   {
@@ -43,34 +43,6 @@ export const howItWorksSteps = [
       'De forma periódica subimos los comprobantes de gasto — alimento para perros y gatos, veterinaria y lo que el refugio necesite — para que veas en qué se usó el dinero recaudado.',
   },
 ] as const
-
-/** Ejemplo de transparencia: en producción vendría de tu base de datos o panel admin. */
-export const transparencyLedger: TransparencyEntry[] = [
-  {
-    id: 'tx-001',
-    date: '2026-06-10',
-    donorLabel: 'María G.',
-    amount: 15000,
-    allocation: 'Vacunas — Luna (perra mestiza)',
-    receiptNote: 'Boleta veterinaria #4821 publicada',
-  },
-  {
-    id: 'tx-002',
-    date: '2026-06-08',
-    donorLabel: 'Donación anónima',
-    amount: 35000,
-    allocation: 'Cirugía menor — Tomás (gato)',
-    receiptNote: 'Comprobante clínica San Patitas',
-  },
-  {
-    id: 'tx-003',
-    date: '2026-06-05',
-    donorLabel: 'Familia Rojas',
-    amount: 5000,
-    allocation: 'Alimento — refugio semanal',
-    receiptNote: 'Factura supermercado mascotas',
-  },
-]
 
 export const animalGallery = [
   {

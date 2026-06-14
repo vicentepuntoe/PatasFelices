@@ -1,21 +1,4 @@
-import { transparencyLedger } from '../data/content'
 import { LiveTransfers } from './LiveTransfers'
-
-function formatCLP(amount: number) {
-  return new Intl.NumberFormat('es-CL', {
-    style: 'currency',
-    currency: 'CLP',
-    maximumFractionDigits: 0,
-  }).format(amount)
-}
-
-function formatDate(iso: string) {
-  return new Intl.DateTimeFormat('es-CL', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  }).format(new Date(iso + 'T12:00:00'))
-}
 
 export function Transparency() {
   return (
@@ -47,25 +30,13 @@ export function Transparency() {
         <div className="transparency-live-stack">
           <LiveTransfers />
           <div className="ledger">
-          <h3 className="ledger-title">Últimas asignaciones (ejemplo)</h3>
-          <ul className="ledger-list">
-            {transparencyLedger.map((entry) => (
-              <li key={entry.id} className="ledger-row">
-                <div className="ledger-row-top">
-                  <span className="ledger-date">{formatDate(entry.date)}</span>
-                  <span className="ledger-amount">{formatCLP(entry.amount)}</span>
-                </div>
-                <p className="ledger-donor">{entry.donorLabel}</p>
-                <p className="ledger-allocation">{entry.allocation}</p>
-                <p className="ledger-receipt">{entry.receiptNote}</p>
-              </li>
-            ))}
-          </ul>
-          <p className="ledger-note">
-            ¿Quieres que tu donación aparezca con tu nombre? Escríbelo al donar;
-            si prefieres anonimato, lo respetamos siempre.
-          </p>
-        </div>
+            <h3 className="ledger-title">Comprobante de gastos</h3>
+            <p className="ledger-empty">sin gastos de momento</p>
+            <p className="ledger-note">
+              ¿Quieres que tu donación aparezca con tu nombre? Escríbelo al donar;
+              si prefieres anonimato, lo respetamos siempre.
+            </p>
+          </div>
         </div>
       </div>
     </section>

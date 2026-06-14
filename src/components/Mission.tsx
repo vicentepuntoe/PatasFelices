@@ -28,9 +28,22 @@ export function Mission() {
             ))}
           </ol>
           <p className="how-steps-foot">
-            ¿Quieres verlo en acción?{' '}
-            <a href="#transparencia">Abre transparencia</a> y, si acabas de donar,{' '}
-            <a href="#donar">vuelve a donar</a> para probar el flujo en vivo.
+            Prueba el flujo en acción{' '}
+            <a className="btn btn--small btn--primary how-steps-foot-donate" href="#donar">
+              donando
+            </a>{' '}
+            y, si ya donaste,{' '}
+            <a
+              href="#historial-transferencias"
+              onClick={(e) => {
+                e.preventDefault()
+                window.location.hash = 'historial-transferencias'
+                window.location.reload()
+              }}
+            >
+              refresca la página
+            </a>{' '}
+            para ver el historial de transferencias.
           </p>
         </div>
       </section>

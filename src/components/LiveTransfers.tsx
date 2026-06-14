@@ -67,12 +67,15 @@ export function LiveTransfers() {
   }, [refresh])
 
   return (
-    <div className={`live-transfers card ${pulse ? 'live-transfers--pulse' : ''}`}>
+    <div
+      id="historial-transferencias"
+      className={`live-transfers card ${pulse ? 'live-transfers--pulse' : ''}`}
+    >
       <div className="live-transfers-head">
         <div>
-          <p className="eyebrow live-transfers-eyebrow">
-            {live ? 'En vivo' : 'Modo demo local'}
-          </p>
+          {live && (
+            <p className="eyebrow live-transfers-eyebrow">En vivo</p>
+          )}
           <h3 className="live-transfers-title">Transferencias que llegan ahora</h3>
         </div>
         <div className="live-transfers-stats" aria-live="polite">
@@ -119,9 +122,8 @@ export function LiveTransfers() {
       )}
 
       <p className="live-transfers-foot">
-        {live
-          ? 'Se actualiza solo cuando entra una donación nueva. También puedes recargar la página para tu tutorial.'
-          : 'En local, sin Supabase, las donaciones se guardan solo mientras corre la API. En Vercel configura Supabase para persistir y Realtime.'}
+        Se actualiza cuando entra una donación nueva. También puedes recargar la
+        página para ver la lista al día.
       </p>
     </div>
   )

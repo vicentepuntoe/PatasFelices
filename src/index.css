@@ -106,6 +106,7 @@ p {
 #como-funciona,
 #impacto,
 #transparencia,
+#historial-transferencias,
 #donar {
   scroll-margin-top: 5.75rem;
 }
@@ -164,6 +165,12 @@ p {
 
 .how-steps-foot a {
   font-weight: 700;
+}
+
+.how-steps-foot-donate {
+  vertical-align: middle;
+  margin: 0 0.1rem;
+  text-transform: none;
 }
 
 .impact {
@@ -311,65 +318,36 @@ p {
 .hero-realtime {
   margin-top: 1.5rem;
   padding-top: 1.25rem;
-  border-top: 1px solid rgb(90 143 106 / 22%);
+  border-top: 1px solid var(--color-border);
+  font-size: clamp(0.92rem, 2vw, 1.02rem);
+  line-height: 1.65;
+  color: var(--color-ink);
 }
 
-.hero-realtime-lead {
-  margin: 0 0 0.35rem;
-  font-size: 0.92rem;
-  line-height: 1.5;
+.hero-realtime-intro {
   color: var(--color-muted);
+  font-weight: 400;
 }
 
-.hero-realtime-lead em {
-  font-style: italic;
-  color: var(--color-brown-light);
-}
-
-.hero-realtime-line {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.15rem, 2.8vw, 1.55rem);
+.hero-realtime-moment {
   font-weight: 600;
-  line-height: 1.4;
-  color: var(--color-brown);
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  color: var(--color-ink);
 }
 
-.hero-time-static {
-  color: var(--color-green);
-  font-weight: 700;
+.hero-realtime-colon {
+  animation: hero-realtime-live 1s steps(1, end) infinite;
 }
 
-.hero-time-meta {
-  font-family: var(--font-body);
-  font-size: 0.78em;
-  font-weight: 500;
-  color: var(--color-muted);
-}
-
-.hero-time-seconds {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: bottom;
-  min-width: 1.5ch;
-}
-
-.hero-time-seconds-digit {
-  display: inline-block;
-  color: var(--color-green);
-  font-weight: 700;
-  animation: hero-sec-roll 0.32s ease-out;
-}
-
-@keyframes hero-sec-roll {
-  from {
-    opacity: 0;
-    transform: translateY(0.55em);
-  }
-  to {
+@keyframes hero-realtime-live {
+  0%,
+  45% {
     opacity: 1;
-    transform: translateY(0);
+  }
+  50%,
+  100% {
+    opacity: 0.35;
   }
 }
 
@@ -570,6 +548,12 @@ p {
 
 .ledger-title {
   margin-top: 0;
+}
+
+.ledger-empty {
+  font-size: 0.92rem;
+  color: var(--color-muted);
+  margin: 0 0 1rem;
 }
 
 .ledger-list {

@@ -6,7 +6,6 @@ export function Hero() {
       <div className="hero-bg" aria-hidden />
       <div className="container hero-grid">
         <div className="hero-copy">
-          <p className="eyebrow">Refugio sin fines de lucro · Chile</p>
           <h1>
             Ellos no pueden pedir ayuda,{' '}
             <span className="text-highlight">pero tú sí puedes darla</span>

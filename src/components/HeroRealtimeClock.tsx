@@ -2,72 +2,83 @@ import { useEffect, useState } from 'react'
 
 const TIME_ZONE = 'America/Santiago'
 
-function getChileTimeParts(date: Date) {
-  const month = new Intl.DateTimeFormat('es-CL', {
-    month: 'long',
-    timeZone: TIME_ZONE,
-  }).format(date)
-  const day = new Intl.DateTimeFormat('es-CL', {
+type ChileClock = {
+  text: string
+  seconds: string
+  dateTime: string
+}
+
+function buildChileClock(date: Date): ChileClock {
+  const dateLabel = new Intl.DateTimeFormat('es-CL', {
+    weekday: 'long',
     day: 'numeric',
+    month: 'long',
+    year: 'numeric',
     timeZone: TIME_ZONE,
   }).format(date)
-  const hour = new Intl.DateTimeFormat('es-CL', {
+
+  const timeLabel = new Intl.DateTimeFormat('es-CL', {
     hour: '2-digit',
-    hour12: false,
-    timeZone: TIME_ZONE,
-  }).format(date)
-  const minute = new Intl.DateTimeFormat('es-CL', {
     minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+    hourCycle: 'h23',
     timeZone: TIME_ZONE,
   }).format(date)
+
   const seconds = new Intl.DateTimeFormat('es-CL', {
     second: '2-digit',
     timeZone: TIME_ZONE,
   }).format(date)
 
-  const monthLabel = month.charAt(0).toUpperCase() + month.slice(1)
+  const dateTime = new Intl.DateTimeFormat('sv-SE', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+    timeZone: TIME_ZONE,
+  })
+    .format(date)
+    .replace(' ', 'T')
 
-  return { month: monthLabel, day, hour, minute, seconds }
-}
+  const capitalizedDate =
+    dateLabel.charAt(0).toUpperCase() + dateLabel.slice(1)
 
-function TickingSeconds({ value }: { value: string }) {
-  return (
-    <span className="hero-time-seconds" aria-label={`segundos ${value}`}>
-      <span key={value} className="hero-time-seconds-digit">
-        {value}
-      </span>
-    </span>
-  )
+  const timeWithoutSeconds = timeLabel.replace(/:\d{2}$/, '')
+
+  return {
+    text: `${capitalizedDate}, ${timeWithoutSeconds}`,
+    seconds,
+    dateTime,
+  }
 }
 
 export function HeroRealtimeClock() {
-  const [parts, setParts] = useState(() => getChileTimeParts(new Date()))
+  const [clock, setClock] = useState(() => buildChileClock(new Date()))
 
   useEffect(() => {
-    const tick = () => setParts(getChileTimeParts(new Date()))
+    const tick = () => setClock(buildChileClock(new Date()))
     tick()
     const id = window.setInterval(tick, 1000)
     return () => window.clearInterval(id)
   }, [])
 
   return (
-    <div className="hero-realtime" aria-live="polite">
-      <p className="hero-realtime-lead">
-        Contador en tiempo real para{' '}
-        <em>cada rescatado que espera tu ayuda</em>
-      </p>
-      <p className="hero-realtime-line">
-        <span className="hero-time-static">{parts.month}</span>
-        <span className="hero-time-meta"> mes </span>
-        <span className="hero-time-static">{parts.day}</span>
-        <span className="hero-time-meta"> día · </span>
-        <span className="hero-time-static">{parts.hour}</span>
-        <span className="hero-time-meta">:</span>
-        <span className="hero-time-static">{parts.minute}</span>
-        <span className="hero-time-meta">:</span>
-        <TickingSeconds value={parts.seconds} />
-        <span className="hero-time-meta"> seg</span>
-      </p>
-    </div>
+    <p className="hero-realtime" aria-live="polite">
+      <span className="hero-realtime-intro">
+        Contador en tiempo real para cada rescatado que espera tu ayuda:{' '}
+      </span>
+      <time className="hero-realtime-moment" dateTime={clock.dateTime}>
+        {clock.text}
+        <span className="hero-realtime-colon" aria-hidden>
+          :
+        </span>
+        {clock.seconds}
+      </time>
+      <span className="hero-realtime-intro"> h (Santiago, Chile).</span>
+    </p>
   )
 }
