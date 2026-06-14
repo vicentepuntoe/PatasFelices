@@ -8,4 +8,8 @@ import { patasfelicesApiDevPlugin } from './server/vitePluginApi.mjs'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), patasfelicesApiDevPlugin()],
+  server: {
+    port: 5173,
+    strictPort: true,
+  },
 })
