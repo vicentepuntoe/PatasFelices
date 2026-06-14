@@ -6,6 +6,7 @@ import {
   isKhipuPaymentFailed,
   readPaymentIdFromReturnUrl,
 } from '../services/khipu'
+import { registerDonationAfterPayment } from '../services/donations'
 
 const POLL_INTERVAL_MS = 10_000
 const MAX_POLL_ATTEMPTS = 18
@@ -50,6 +51,11 @@ export function ThankYou() {
         if (cancelled) return
 
         if (isKhipuPaymentConfirmed(payment.status)) {
+          try {
+            await registerDonationAfterPayment(paymentId!)
+          } catch {
+            /* el webhook puede registrar después; no bloqueamos la UI */
+          }
           setView({ kind: 'confirmed' })
           return
         }

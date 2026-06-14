@@ -25,3 +25,14 @@ export type KhipuPaymentStatusResponse = {
   amount?: number
   currency?: string
 }
+
+export type LiveDonationEntry = {
+  id: string
+  khipuPaymentId: string
+  amount: number
+  currency: string
+  donorLabel: string
+  message?: string
+  khipuStatus: string
+  createdAt: string
+}
