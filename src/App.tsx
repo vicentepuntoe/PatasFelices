@@ -1,3 +1,4 @@
+import { CookieConsent } from './components/CookieConsent'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
@@ -20,29 +21,40 @@ function App() {
 
   const Legal = legalRoutes[path]
   if (Legal) {
-    return Legal()
+    return (
+      <>
+        <CookieConsent />
+        {Legal()}
+      </>
+    )
   }
 
   if (path === '/donacion/gracias' || path === '/gracias') {
     return (
-      <div className="app">
-        <ThankYou />
-        <Footer />
-      </div>
+      <>
+        <CookieConsent />
+        <div className="app">
+          <ThankYou />
+          <Footer />
+        </div>
+      </>
     )
   }
 
   return (
-    <div className="app">
-      <Header />
-      <main>
-        <Hero />
-        <Mission />
-        <Transparency />
-        <DonateSection />
-      </main>
-      <Footer />
-    </div>
+    <>
+      <CookieConsent />
+      <div className="app">
+        <Header />
+        <main>
+          <Hero />
+          <Mission />
+          <Transparency />
+          <DonateSection />
+        </main>
+        <Footer />
+      </div>
+    </>
   )
 }
 

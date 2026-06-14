@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { donationPresets } from '../data/content'
 import { createKhipuPayment } from '../services/khipu'
+import { siteLegal } from '../data/siteLegal'
 
 function formatCLP(amount: number) {
   return new Intl.NumberFormat('es-CL', {
@@ -35,7 +36,7 @@ export function DonateSection() {
     }
 
     if (!acceptedLegal) {
-      setError('Debes aceptar los términos y la política de privacidad para continuar.')
+      setError('Debes aceptar los términos, la privacidad y la política de cookies para continuar.')
       return
     }
 
@@ -145,12 +146,28 @@ export function DonateSection() {
             />
             <span>
               He leído y acepto los{' '}
-              <a href="/terminos" target="_blank" rel="noopener noreferrer">
+              <a
+                href={siteLegal.paths.terms}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 términos de donación
+              </a>
+              , la{' '}
+              <a
+                href={siteLegal.paths.privacy}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                política de privacidad
               </a>{' '}
               y la{' '}
-              <a href="/privacidad" target="_blank" rel="noopener noreferrer">
-                política de privacidad
+              <a
+                href={siteLegal.paths.cookies}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                política de cookies
               </a>
               .
             </span>

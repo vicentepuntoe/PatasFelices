@@ -62,10 +62,17 @@ export function TermsPage() {
         <h2>4. Transparencia y publicación del nombre</h2>
         <p>
           Si proporcionas un nombre o pseudónimo, autorizas su uso en el{' '}
-          <strong>registro de transparencia</strong> (por ejemplo, iniciales o
-          nombre abreviado junto al monto destinado). Si dejas el campo vacío,
+          <strong>historial de pagos</strong> visible en el sitio (por ejemplo,
+          iniciales o nombre abreviado junto al monto). Si dejas el campo vacío,
           trataremos la donación como anónima en ese registro, sin perjuicio de
           los registros internos y contables que la ley exija.
+        </p>
+        <p>
+          Los <strong>comprobantes de gasto</strong> se publican en el historial
+          correspondiente cuando estén disponibles; el saldo entre recaudado y
+          gastado publicado se muestra en la sección de transparencia. Las fotos
+          de la sección &quot;Animales ayudados&quot; son ejemplos ilustrativos y
+          no sustituyen los comprobantes.
         </p>
       </section>
 
@@ -140,8 +147,8 @@ export function TermsPage() {
         <h2>11. Privacidad</h2>
         <p>
           El tratamiento de datos personales se rige por nuestra{' '}
-          <a href="/privacidad">Política de privacidad</a> y, si aplica, la{' '}
-          <a href="/cookies">Política de cookies</a>.
+          <a href={L.paths.privacy}>Política de privacidad</a> y, si aplica, la{' '}
+          <a href={L.paths.cookies}>Política de cookies</a>.
         </p>
       </section>
 

@@ -72,11 +72,19 @@ export function PrivacyPage() {
             necesarios a la transacción (por ejemplo, identificación del pagador
             según el medio de pago elegido en Khipu).
           </li>
+          <li>
+            <strong>Registro de donaciones confirmadas:</strong> cuando el pago
+            se confirma, podemos guardar monto, fecha, etiqueta de donante (o
+            anónimo) y referencia técnica en nuestra base de datos alojada en{' '}
+            {L.hostingProvider}, para mostrarlas en el historial de pagos del sitio.
+          </li>
         </ul>
         <p>
           No exigimos crear una cuenta en nuestro sitio. No solicitamos correo
           electrónico en el formulario de donación actual; si en el futuro lo
-          hiciéramos, actualizaríamos esta política.
+          hiciéramos, actualizaríamos esta política. No usamos cookies propias de
+          analítica ni seguimiento; consulta la{' '}
+          <a href={L.paths.cookies}>Política de cookies</a>.
         </p>
       </section>
 
@@ -90,8 +98,10 @@ export function PrivacyPage() {
           </li>
           <li>
             <strong>Transparencia:</strong> si indicas un nombre, podemos
-            publicarlo de forma abreviada en el registro público de uso de fondos,
-            salvo que elijas permanecer anónimo.
+            publicarlo de forma abreviada en el <strong>historial de pagos</strong>{' '}
+            (libro en tiempo real), salvo que elijas permanecer anónimo. Los{' '}
+            <strong>gastos</strong> y comprobantes se publican por separado cuando
+            el equipo los carga; no incluyen datos sensibles de donantes.
           </li>
           <li>
             <strong>Seguridad y prevención de fraude:</strong> logs, límites de
