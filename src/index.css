@@ -102,6 +102,74 @@ p {
   padding: 5rem 0;
 }
 
+#inicio,
+#como-funciona,
+#impacto,
+#transparencia,
+#donar {
+  scroll-margin-top: 5.75rem;
+}
+
+.how-it-works {
+  background: var(--color-cream);
+}
+
+.how-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.how-step {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin: 0;
+}
+
+.how-step-number {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--color-green);
+  color: var(--color-white);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.how-step-body h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.how-step-body p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--color-muted);
+  line-height: 1.55;
+}
+
+.how-steps-foot {
+  margin: 1.75rem 0 0;
+  font-size: 0.95rem;
+  color: var(--color-muted);
+}
+
+.how-steps-foot a {
+  font-weight: 700;
+}
+
+.impact {
+  background: linear-gradient(180deg, var(--color-white), var(--color-cream));
+}
+
 .section-head {
   max-width: 640px;
   margin-bottom: 2.5rem;
@@ -240,6 +308,71 @@ p {
   align-items: center;
 }
 
+.hero-realtime {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgb(90 143 106 / 22%);
+}
+
+.hero-realtime-lead {
+  margin: 0 0 0.35rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--color-muted);
+}
+
+.hero-realtime-lead em {
+  font-style: italic;
+  color: var(--color-brown-light);
+}
+
+.hero-realtime-line {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2.8vw, 1.55rem);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-brown);
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-time-static {
+  color: var(--color-green);
+  font-weight: 700;
+}
+
+.hero-time-meta {
+  font-family: var(--font-body);
+  font-size: 0.78em;
+  font-weight: 500;
+  color: var(--color-muted);
+}
+
+.hero-time-seconds {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  min-width: 1.5ch;
+}
+
+.hero-time-seconds-digit {
+  display: inline-block;
+  color: var(--color-green);
+  font-weight: 700;
+  animation: hero-sec-roll 0.32s ease-out;
+}
+
+@keyframes hero-sec-roll {
+  from {
+    opacity: 0;
+    transform: translateY(0.55em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -308,17 +441,6 @@ p {
   color: var(--color-muted);
 }
 
-.mission {
-  background: var(--color-cream);
-}
-
-.mission-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
-  margin-bottom: 2.5rem;
-}
-
 .card {
   background: var(--color-white);
   border: 1px solid var(--color-border);
@@ -364,6 +486,57 @@ p {
   padding: 0.75rem 0.9rem;
   font-size: 0.9rem;
   color: var(--color-muted);
+}
+
+.gallery-item--stats {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(165deg, #f3f9f4, var(--color-cream));
+}
+
+.gallery-item--stats .impact-stats {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  aspect-ratio: 4 / 3;
+  padding: 1.25rem 1.35rem;
+}
+
+.impact-stats-eyebrow {
+  margin: 0 0 1rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-green);
+}
+
+.impact-stats-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.impact-stats-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.impact-stats-list strong {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  line-height: 1;
+  color: var(--color-green);
+}
+
+.impact-stats-list span {
+  font-size: 0.88rem;
+  color: var(--color-brown-light);
 }
 
 .transparency {
@@ -893,7 +1066,7 @@ p {
 
 @media (max-width: 960px) {
   .hero-grid,
-  .mission-cards,
+  .how-steps,
   .gallery,
   .transparency-grid,
   .donate-grid,

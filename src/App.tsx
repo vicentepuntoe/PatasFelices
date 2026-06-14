@@ -23,7 +23,7 @@ function App() {
     return Legal()
   }
 
-  if (path === '/donacion/gracias') {
+  if (path === '/donacion/gracias' || path === '/gracias') {
     return (
       <div className="app">
         <ThankYou />

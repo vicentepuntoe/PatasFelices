@@ -1,53 +1,75 @@
-import { animalGallery } from '../data/content'
+import { animalGallery, howItWorksSteps } from '../data/content'
+import { HeroImpactStats } from './HeroImpactStats'
 
 export function Mission() {
   return (
-    <section className="section mission" id="mision">
-      <div className="container">
-        <div className="section-head">
-          <p className="eyebrow">Nuestra misión</p>
-          <h2>Salvar vidas con dignidad, cariño y cuentas claras</h2>
-          <p>
-            No somos una plataforma anónima: somos vecinos, veterinarios y
-            voluntarios que viven el rescate día a día. Tu donación no desaparece
-            en un fondo general: la vinculamos a gastos reales y los publicamos.
+    <>
+      <section className="section how-it-works" id="como-funciona">
+        <div className="container">
+          <div className="section-head">
+            <p className="eyebrow">Cómo funciona</p>
+            <h2>De tu transferencia al comprobante, paso a paso</h2>
+            <p>
+              Así conectamos cada donación con lo que ocurre después: nada de cajas
+              negras, solo un flujo claro que puedes seguir en esta misma página.
+            </p>
+          </div>
+          <ol className="how-steps">
+            {howItWorksSteps.map((item) => (
+              <li key={item.step} className="how-step card">
+                <span className="how-step-number" aria-hidden>
+                  {item.step}
+                </span>
+                <div className="how-step-body">
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <p className="how-steps-foot">
+            ¿Quieres verlo en acción?{' '}
+            <a href="#transparencia">Abre transparencia</a> y, si acabas de donar,{' '}
+            <a href="#donar">vuelve a donar</a> para probar el flujo en vivo.
           </p>
         </div>
-        <div className="mission-cards">
-          <article className="card">
-            <h3>Rescate y cuidado</h3>
+      </section>
+
+      <section className="section impact" id="impacto">
+        <div className="container">
+          <div className="section-head">
+            <p className="eyebrow">Impacto</p>
+            <h2>Lo que logramos juntos, en fotos y en cifras</h2>
             <p>
-              Recibimos animales en situación de calle, maltrato o abandono. Les
-              damos refugio, alimento y tratamiento veterinario hasta que estén
-              listos para un hogar.
+              Cada aporte se traduce en rescates, adopciones y cuentas claras.
+              Estas historias y números son parte de lo que tu donación hace posible.
             </p>
-          </article>
-          <article className="card card--accent">
-            <h3>Transparencia radical</h3>
-            <p>
-              Por cada donativo registramos monto, fecha y destino. Subimos
-              boletas, facturas o comprobantes para que veas exactamente en qué
-              se usó tu aporte.
-            </p>
-          </article>
-          <article className="card">
-            <h3>Adopción responsable</h3>
-            <p>
-              Entrevistamos familias, hacemos seguimiento y priorizamos el
-              bienestar animal. Donar también financia castraciones y microchip
-              antes de cada adopción.
-            </p>
-          </article>
+          </div>
+          <div className="gallery">
+            {animalGallery.map((item, index) =>
+              index === 1 ? (
+                <figure key="impact-stats" className="gallery-item gallery-item--stats">
+                  <HeroImpactStats />
+                  <figcaption>
+                    Gracias a quienes donan, estos números siguen creciendo.
+                  </figcaption>
+                </figure>
+              ) : (
+                <figure key={item.src} className="gallery-item">
+                  <img
+                    src={item.src}
+                    alt={item.alt}
+                    loading="lazy"
+                    width={400}
+                    height={300}
+                  />
+                  <figcaption>{item.caption}</figcaption>
+                </figure>
+              ),
+            )}
+          </div>
         </div>
-        <div className="gallery" id="impacto">
-          {animalGallery.map((item) => (
-            <figure key={item.src} className="gallery-item">
-              <img src={item.src} alt={item.alt} loading="lazy" width={400} height={300} />
-              <figcaption>{item.caption}</figcaption>
-            </figure>
-          ))}
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   )
 }

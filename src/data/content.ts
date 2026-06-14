@@ -23,6 +23,27 @@ export const donationPresets: DonationPreset[] = [
   },
 ]
 
+export const howItWorksSteps = [
+  {
+    step: 1,
+    title: 'Haces tu donativo',
+    description:
+      'Eliges el monto en el sitio y pagas con Khipu. No necesitas crear cuenta aquí: el cobro es seguro y vuelves a nuestra web al terminar.',
+  },
+  {
+    step: 2,
+    title: 'Se registra al instante',
+    description:
+      'Cuando Khipu confirma el pago, guardamos la transferencia y la sección de transparencia se actualiza en vivo. Puedes recargar la página y seguirá apareciendo tu aporte (con el nombre que dejaste o como donación anónima).',
+  },
+  {
+    step: 3,
+    title: 'Publicamos los gastos',
+    description:
+      'De forma periódica subimos los comprobantes de gasto — alimento para perros y gatos, veterinaria y lo que el refugio necesite — para que veas en qué se usó el dinero recaudado.',
+  },
+] as const
+
 /** Ejemplo de transparencia: en producción vendría de tu base de datos o panel admin. */
 export const transparencyLedger: TransparencyEntry[] = [
   {

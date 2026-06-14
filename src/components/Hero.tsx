@@ -1,3 +1,5 @@
+import { HeroRealtimeClock } from './HeroRealtimeClock'
+
 export function Hero() {
   return (
     <section className="hero" id="inicio">
@@ -22,20 +24,7 @@ export function Hero() {
               Ver cómo usamos el dinero
             </a>
           </div>
-          <ul className="hero-stats">
-            <li>
-              <strong>127</strong>
-              <span>rescatados este año</span>
-            </li>
-            <li>
-              <strong>89</strong>
-              <span>adopciones exitosas</span>
-            </li>
-            <li>
-              <strong>100%</strong>
-              <span>donaciones trazables</span>
-            </li>
-          </ul>
+          <HeroRealtimeClock />
         </div>
         <div className="hero-visual">
           <img

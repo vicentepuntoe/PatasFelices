@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 
 const links = [
-  { href: '#mision', label: 'Misión' },
+  { href: '#como-funciona', label: 'Cómo funciona' },
   { href: '#transparencia', label: 'Transparencia' },
   { href: '#impacto', label: 'Impacto' },
-  { href: '#donar', label: 'Donar' },
 ]
 
 export function Header() {
