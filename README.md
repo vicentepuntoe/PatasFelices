@@ -113,7 +113,7 @@ En el sitio deberías publicar, como mínimo:
 2. **Política de cookies / tecnologías similares** — si usas analytics, pixels o Turnstile.
 3. **Base legal clara** — el donante acepta el tratamiento necesario para procesar la donación y la transparencia acordada (nombre opcional en el libro público).
 
-Plantillas genéricas no bastan: ajústalas a lo que **realmente** hace tu despliegue.
+El repositorio incluye plantillas en rutas `/privacidad`, `/terminos` y `/cookies`. **Complétalas** editando `src/data/siteLegal.ts` (RUT, razón social, hosting, flags de Turnstile/analytics). Plantillas genéricas no bastan: ajústalas a lo que **realmente** hace tu despliegue y revísalas con abogado.
 
 ### Transparencia y confianza (más allá del código)
 
@@ -159,7 +159,7 @@ Turnstile no sustituye una política de privacidad: revisa el [addendum de priva
 ## Roadmap sugerido (contribuciones bienvenidas)
 
 - [ ] Integración **Cloudflare Turnstile** en frontend + verificación en API
-- [ ] Páginas legales en markdown (`/privacidad`, `/terminos`)
+- [x] Páginas legales (`/privacidad`, `/terminos`, `/cookies`) — completar `siteLegal.ts`
 - [ ] Webhook Khipu → base de datos + panel de transparencia
 - [ ] Tests e2e del flujo de donación (mock Khipu)
 - [ ] i18n (es/en)
