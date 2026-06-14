@@ -6,8 +6,8 @@ export function Hero() {
         <div className="hero-copy">
           <p className="eyebrow">Refugio sin fines de lucro · Chile</p>
           <h1>
-            Ellos no pueden pedir ayuda.
-            <span className="text-highlight"> Tú sí puedes darla.</span>
+            Ellos no pueden pedir ayuda,{' '}
+            <span className="text-highlight">pero tú sí puedes darla</span>
           </h1>
           <p className="lead">
             PatasFelices rescata perros y gatos abandonados, los rehabilita y les
@@ -45,10 +45,6 @@ export function Hero() {
             height={640}
             loading="eager"
           />
-          <div className="hero-badge">
-            <p>“Gracias a ustedes, Luna volvió a confiar.”</p>
-            <span>— Voluntaria PatasFelices</span>
-          </div>
         </div>
       </div>
     </section>
