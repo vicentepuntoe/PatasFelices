@@ -44,28 +44,23 @@ export const howItWorksSteps = [
   },
 ] as const
 
-export const animalGallery = [
+export const helpedAnimalsExamples = [
   {
-    src: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&q=80',
-    alt: 'Perro mestizo con mirada dulce esperando adopción',
-    caption: 'Cada donación es un plato lleno y una noche segura.',
+    src: 'https://images.unsplash.com/photo-1589923188900-56dae9dad9f0?w=800&q=80',
+    alt: 'Perro comiendo de su plato en el refugio',
+    caption: 'Ración diaria cubierta con aportes del libro de transparencia.',
   },
   {
-    src: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800&q=80',
-    alt: 'Gato naranja acurrucado',
-    caption: 'Rescatamos, curamos y buscamos hogar con amor.',
+    src: 'https://images.unsplash.com/photo-1544561870-8b948717e2b3?w=800&q=80',
+    alt: 'Varios perros recibiendo alimento en bandejas',
+    caption: 'Alimento comprado tras donaciones confirmadas vía Khipu (ejemplo).',
   },
   {
-    src: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800&q=80',
-    alt: 'Dos perros jugando en el pasto',
-    caption: 'Tu apoyo financia rehabilitación y paseos de socialización.',
+    src: 'https://images.unsplash.com/photo-1530281700549-e82e7bf110d6?w=800&q=80',
+    alt: 'Cachorro golden comiendo con tranquilidad',
+    caption: 'Cada transferencia registrada puede traducirse en platos como este.',
   },
-  {
-    src: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=800&q=80',
-    alt: 'Gato atigrado mirando a cámara',
-    caption: 'Publicamos cada peso: de la donación al comprobante.',
-  },
-]
+] as const
 
 /** Textos e imágenes de la página de gracias tras donar (por estado del pago). */
 export const thankYouMoments = {

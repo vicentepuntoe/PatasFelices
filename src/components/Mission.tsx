@@ -1,5 +1,5 @@
-import { animalGallery, howItWorksSteps } from '../data/content'
-import { HeroImpactStats } from './HeroImpactStats'
+import { howItWorksSteps } from '../data/content'
+import { HelpedAnimals } from './HelpedAnimals'
 
 export function Mission() {
   return (
@@ -29,10 +29,8 @@ export function Mission() {
           </ol>
           <p className="how-steps-foot">
             Prueba el flujo en acción{' '}
-            <a className="btn btn--small btn--primary how-steps-foot-donate" href="#donar">
-              donando
-            </a>{' '}
-            y, si ya donaste,{' '}
+            <a href="#donar">donando</a>{' '}
+            y, si ya donaste, refresca la página para ver el{' '}
             <a
               href="#historial-transferencias"
               onClick={(e) => {
@@ -41,48 +39,14 @@ export function Mission() {
                 window.location.reload()
               }}
             >
-              refresca la página
-            </a>{' '}
-            para ver el historial de transferencias.
+              historial de transferencias
+            </a>
+            .
           </p>
         </div>
       </section>
 
-      <section className="section impact" id="impacto">
-        <div className="container">
-          <div className="section-head">
-            <p className="eyebrow">Impacto</p>
-            <h2>Lo que logramos juntos, en fotos y en cifras</h2>
-            <p>
-              Cada aporte se traduce en rescates, adopciones y cuentas claras.
-              Estas historias y números son parte de lo que tu donación hace posible.
-            </p>
-          </div>
-          <div className="gallery">
-            {animalGallery.map((item, index) =>
-              index === 1 ? (
-                <figure key="impact-stats" className="gallery-item gallery-item--stats">
-                  <HeroImpactStats />
-                  <figcaption>
-                    Gracias a quienes donan, estos números siguen creciendo.
-                  </figcaption>
-                </figure>
-              ) : (
-                <figure key={item.src} className="gallery-item">
-                  <img
-                    src={item.src}
-                    alt={item.alt}
-                    loading="lazy"
-                    width={400}
-                    height={300}
-                  />
-                  <figcaption>{item.caption}</figcaption>
-                </figure>
-              ),
-            )}
-          </div>
-        </div>
-      </section>
+      <HelpedAnimals />
     </>
   )
 }

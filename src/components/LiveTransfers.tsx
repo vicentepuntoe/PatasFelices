@@ -22,11 +22,14 @@ function formatTime(iso: string) {
   }).format(new Date(iso))
 }
 
-export function LiveTransfers() {
+export function LiveTransfers({
+  onIncomeTotalChange,
+}: {
+  onIncomeTotalChange?: (total: number) => void
+}) {
   const [count, setCount] = useState(0)
   const [totalAmount, setTotalAmount] = useState(0)
   const [donations, setDonations] = useState<LiveDonationEntry[]>([])
-  const [live, setLive] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [pulse, setPulse] = useState(false)
@@ -34,9 +37,9 @@ export function LiveTransfers() {
   const refresh = useCallback(async () => {
     try {
       const snapshot = await fetchLiveDonations()
-      setLive(snapshot.live)
       setCount(snapshot.count)
       setTotalAmount(snapshot.totalAmount)
+      onIncomeTotalChange?.(snapshot.totalAmount)
       setDonations((prev) => {
         const prevTop = prev[0]?.id
         const nextTop = snapshot.donations[0]?.id
@@ -54,7 +57,7 @@ export function LiveTransfers() {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [onIncomeTotalChange])
 
   useEffect(() => {
     void refresh()
@@ -69,14 +72,12 @@ export function LiveTransfers() {
   return (
     <div
       id="historial-transferencias"
-      className={`live-transfers card ${pulse ? 'live-transfers--pulse' : ''}`}
+      className={`live-transfers card card--elevated ${pulse ? 'live-transfers--pulse' : ''}`}
     >
       <div className="live-transfers-head">
         <div>
-          {live && (
-            <p className="eyebrow live-transfers-eyebrow">En vivo</p>
-          )}
-          <h3 className="live-transfers-title">Transferencias que llegan ahora</h3>
+          <p className="eyebrow live-transfers-eyebrow">Tiempo real</p>
+          <h3 className="live-transfers-title">Historial de pagos</h3>
         </div>
         <div className="live-transfers-stats" aria-live="polite">
           <div className="live-stat">
@@ -87,7 +88,7 @@ export function LiveTransfers() {
           </div>
           <div className="live-stat">
             <span className="live-stat-value">{formatCLP(totalAmount)}</span>
-            <span className="live-stat-label">recaudado en vivo</span>
+            <span className="live-stat-label">total recaudado</span>
           </div>
         </div>
       </div>

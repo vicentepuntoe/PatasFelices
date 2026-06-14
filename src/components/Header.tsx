@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 const links = [
   { href: '#como-funciona', label: 'Cómo funciona' },
   { href: '#transparencia', label: 'Transparencia' },
-  { href: '#impacto', label: 'Impacto' },
+  { href: '#animales-ayudados', label: 'Animales ayudados' },
 ]
 
 export function Header() {
