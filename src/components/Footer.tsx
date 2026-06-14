@@ -9,6 +9,9 @@ export function Footer() {
         <div className="footer-links">
           <a href="#transparencia">Transparencia</a>
           <a href="#donar">Donar</a>
+          <a href="/privacidad">Privacidad</a>
+          <a href="/terminos">Términos</a>
+          <a href="/cookies">Cookies</a>
           <a href="mailto:hola@patasfelices.cl">hola@patasfelices.cl</a>
         </div>
         <p className="footer-copy">© {new Date().getFullYear()} PatasFelices · Hecho con amor por los animales</p>
