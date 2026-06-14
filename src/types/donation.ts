@@ -18,3 +18,10 @@ export type KhipuPaymentResponse = {
   paymentUrl: string
   simplifiedTransferUrl?: string
 }
+
+export type KhipuPaymentStatusResponse = {
+  paymentId: string
+  status: string
+  amount?: number
+  currency?: string
+}
