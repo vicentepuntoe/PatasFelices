@@ -1,3 +1,11 @@
+import querystring from 'node:querystring'
+import {
+  bodyTuplesToForm,
+  buildKhipuBodyTuples,
+  buildKhipuQueryTuples,
+  signKhipuRequest,
+} from './khipuSign.mjs'
+
 const DEFAULT_KHIPU_API_BASE = 'https://khipu.com/api/2.0'
 
 export function createKhipuClient({
@@ -5,7 +13,8 @@ export function createKhipuClient({
   secret,
   apiBaseUrl = DEFAULT_KHIPU_API_BASE,
 }) {
-  const paymentsUrl = `${apiBaseUrl}/payments`
+  const apiBase = apiBaseUrl.replace(/\/$/, '')
+
   function assertConfigured() {
     if (!receiverId || !secret) {
       const err = new Error('Khipu no está configurado en el servidor.')
@@ -14,54 +23,76 @@ export function createKhipuClient({
     }
   }
 
-  function authHeader() {
+  function endpointPath(suffix) {
+    const normalized = suffix.startsWith('/') ? suffix : `/${suffix}`
+    return `${apiBase}${normalized}`
+  }
+
+  async function request({ method, suffix, body, query }) {
     assertConfigured()
-    const token = Buffer.from(`${receiverId}:${secret}`, 'utf8').toString('base64')
-    return `Basic ${token}`
+
+    const requestUrl = endpointPath(suffix)
+    const pathForFetch = requestUrl.replace(/^https?:\/\/[^/]+/, '')
+    const bodyTuples = buildKhipuBodyTuples(body)
+    const queryTuples = buildKhipuQueryTuples(query)
+    const hash = signKhipuRequest({
+      method,
+      requestUrl,
+      secret,
+      queryTuples,
+      bodyTuples,
+    })
+
+    const headers = {
+      Authorization: `${receiverId}:${hash}`,
+      Accept: 'application/json',
+    }
+
+    let fetchBody
+    if (method === 'POST' || method === 'PUT' || method === 'PATCH') {
+      headers['Content-Type'] = 'application/x-www-form-urlencoded'
+      fetchBody = bodyTuples.length ? bodyTuplesToForm(bodyTuples) : ''
+    }
+
+    let fetchPath = pathForFetch
+    if (query && Object.keys(query).length > 0) {
+      fetchPath += `?${querystring.stringify(query)}`
+    }
+
+    const origin = new URL(requestUrl).origin
+    const response = await fetch(`${origin}${fetchPath}`, {
+      method,
+      headers,
+      body: fetchBody,
+    })
+
+    let data
+    try {
+      data = await response.json()
+    } catch {
+      data = null
+    }
+
+    return { ok: response.ok, status: response.status, data }
   }
 
   async function createPayment(payload) {
-    assertConfigured()
-
-    const response = await fetch(paymentsUrl, {
+    return request({
       method: 'POST',
-      headers: {
-        Authorization: authHeader(),
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+      suffix: '/payments',
+      body: {
+        ...payload,
+        notify_api_version: payload.notify_api_version ?? '3.0',
       },
-      body: JSON.stringify(payload),
     })
-
-    let data
-    try {
-      data = await response.json()
-    } catch {
-      data = null
-    }
-
-    return { ok: response.ok, status: response.status, data }
   }
 
   async function getPayment(paymentId) {
-    assertConfigured()
-
-    const response = await fetch(`${paymentsUrl}/${encodeURIComponent(paymentId)}`, {
+    const id = String(paymentId ?? '').trim()
+    return request({
       method: 'GET',
-      headers: {
-        Authorization: authHeader(),
-        Accept: 'application/json',
-      },
+      suffix: `/payments/${id}`,
     })
-
-    let data
-    try {
-      data = await response.json()
-    } catch {
-      data = null
-    }
-
-    return { ok: response.ok, status: response.status, data }
   }
 
   return { createPayment, getPayment }
