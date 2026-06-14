@@ -15,6 +15,7 @@ export function DonateSection() {
   const [customAmount, setCustomAmount] = useState('')
   const [donorName, setDonorName] = useState('')
   const [message, setMessage] = useState('')
+  const [acceptedLegal, setAcceptedLegal] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -30,6 +31,11 @@ export function DonateSection() {
 
     if (!Number.isFinite(effectiveAmount) || effectiveAmount < 1000) {
       setError('El monto mínimo es $1.000 CLP.')
+      return
+    }
+
+    if (!acceptedLegal) {
+      setError('Debes aceptar los términos y la política de privacidad para continuar.')
       return
     }
 
@@ -131,6 +137,24 @@ export function DonateSection() {
                 : '—'}
             </strong>
           </p>
+          <label className="field field--checkbox">
+            <input
+              type="checkbox"
+              checked={acceptedLegal}
+              onChange={(e) => setAcceptedLegal(e.target.checked)}
+            />
+            <span>
+              He leído y acepto los{' '}
+              <a href="/terminos" target="_blank" rel="noopener noreferrer">
+                términos de donación
+              </a>{' '}
+              y la{' '}
+              <a href="/privacidad" target="_blank" rel="noopener noreferrer">
+                política de privacidad
+              </a>
+              .
+            </span>
+          </label>
           {error && (
             <p className="form-error" role="alert">
               {error}
