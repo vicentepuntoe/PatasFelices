@@ -9,8 +9,8 @@ export function Footer() {
           <p>Rescatamos con el corazón, rendimos cuentas con hechos.</p>
         </div>
         <div className="footer-links">
-          <a href="#transparencia">Transparencia</a>
-          <a href="#donar">Donar</a>
+          <a href="/#transparencia">Transparencia</a>
+          <a href="/#donar">Donar</a>
           <a href={siteLegal.paths.privacy}>Política de privacidad</a>
           <a href={siteLegal.paths.terms}>Términos de donación</a>
           <a href={siteLegal.paths.cookies}>Política de cookies</a>

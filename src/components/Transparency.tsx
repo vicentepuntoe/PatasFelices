@@ -19,7 +19,6 @@ export function Transparency() {
     <section className="section transparency" id="transparencia">
       <div className="container">
         <div className="section-head section-head--center transparency-head">
-          <p className="eyebrow">Transparencia</p>
           <h2>Cada peso tiene nombre, fecha y comprobante</h2>
           <p>
             Cuando donas con Khipu, registramos el pago en nuestro libro abierto.
