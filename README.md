@@ -22,6 +22,7 @@ Queremos que refugios, fundaciones y colectivos puedan **fork**, adaptar y despl
 - Sección de **transparencia** (flujo donación → gasto → comprobante).
 - Formulario de donación con montos sugeridos y monto libre (CLP).
 - Integración **Khipu** vía API en servidor (las claves secretas no van al navegador).
+- Libro de **donaciones en vivo** con **Supabase** (API + Realtime opcional en el navegador).
 - Sin autenticación de usuarios (solo pago en Khipu).
 - Stack: **React 19**, **TypeScript**, **Vite**, **Express** (API mínima).
 
@@ -31,7 +32,8 @@ Queremos que refugios, fundaciones y colectivos puedan **fork**, adaptar y despl
 
 - Node.js 20+ (recomendado)
 - Cuenta **Khipu** con credenciales de cobrador ([documentación para comercios](https://khipu.com))
-- Dominio con **HTTPS** en producción
+- Proyecto **Supabase** con la tabla `donations` (ver `supabase/migrations/`)
+- URL pública con **HTTPS** en producción (p. ej. `*.vercel.app`)
 - (Recomendado) **Cloudflare** delante del sitio: DNS, TLS, WAF y **Turnstile** anti-bots
 
 ---
@@ -43,30 +45,47 @@ git clone https://github.com/vicentepuntoe/PatasFelices.git
 cd PatasFelices
 npm install
 cp .env.example .env
-# Edita .env con KHIPU_RECEIVER_ID, KHIPU_SECRET y APP_URL
-npm run dev
+# Edita .env: Khipu, APP_URL y Supabase (ver tabla abajo)
+npm run dev:all
 ```
 
 | Servicio | URL (desarrollo) |
 |----------|------------------|
 | Frontend | http://localhost:5173 |
-| API Khipu | http://localhost:3001 |
+| API | http://localhost:3001 (proxy `/api` desde Vite) |
 
 Scripts útiles:
 
-- `npm run dev` — frontend + API
+- `npm run dev:all` — frontend + API (recomendado)
+- `npm run dev` — solo frontend (sin `/api` salvo proxy manual)
+- `npm run dev:api` — solo API en el puerto 3001
 - `npm run build` — build de producción del frontend
 - `npm run preview` — vista previa del build
 
 ### Variables de entorno
 
-| Variable | Descripción |
-|----------|-------------|
-| `KHIPU_RECEIVER_ID` | ID de cobrador Khipu |
-| `KHIPU_SECRET` | Secreto de la API (solo servidor) |
-| `APP_URL` | URL pública del sitio (retorno/cancelación de pago) |
-| `KHIPU_NOTIFY_URL` | (Opcional) Webhook de confirmación de pago |
-| `KHIPU_API_PORT` | Puerto de la API en local (default `3001`) |
+| Variable | Dónde | Descripción |
+|----------|--------|-------------|
+| `KHIPU_RECEIVER_ID` | Servidor | ID de cobrador Khipu |
+| `KHIPU_SECRET` | Servidor | Secreto de la API |
+| `APP_URL` | Servidor | URL pública del sitio (retorno/cancelación/webhook) |
+| `KHIPU_NOTIFY_URL` | Servidor | (Opcional) Webhook; en Vercel + `APP_URL` https suele inferirse |
+| `KHIPU_MIN_AMOUNT` / `KHIPU_MAX_AMOUNT` | Servidor | Límites CLP (default 1000 / 100000) |
+| `KHIPU_API_PORT` | Local | Puerto API (default `3001`) |
+| `SUPABASE_URL` | Servidor | Project URL de Supabase |
+| `SUPABASE_SERVICE_ROLE_KEY` | Servidor | Secret key (`sb_secret_…`); alias `SUPABASE_SECRET_KEY` |
+| `VITE_SUPABASE_URL` | Build front | Misma URL que `SUPABASE_URL` |
+| `VITE_SUPABASE_ANON_KEY` | Build front | Publishable key; alias `VITE_SUPABASE_PUBLISHABLE_KEY` |
+
+**Vercel:** define las mismas variables en *Project → Settings → Environment Variables* (Production). Tras cambiarlas, redeploy. Comprueba `GET /api/health` → `khipuConfigured` y `donationsLive` en `true`.
+
+### Supabase
+
+1. Crea un proyecto en [Supabase](https://supabase.com).
+2. Ejecuta en orden los SQL de `supabase/migrations/` (001 tabla + Realtime, 002 RLS solo pagos confirmados).
+3. Copia URL, **secret** (servidor) y **publishable** (front) al `.env` y a Vercel.
+
+Sin `SUPABASE_*` en el servidor, la API usa memoria efímera (no válido en producción serverless).
 
 ---
 
@@ -74,7 +93,9 @@ Scripts útiles:
 
 ```
 src/           → UI React (donaciones, transparencia, contenido)
-server/        → API Express: POST /api/khipu/payments
+server/        → API Express (Khipu, donaciones, webhook)
+api/index.mjs  → Handler serverless en Vercel
+supabase/      → Migraciones SQL (tabla donations + RLS)
 vite.config.ts → Proxy /api → API en desarrollo
 ```
 
@@ -160,7 +181,8 @@ Turnstile no sustituye una política de privacidad: revisa el [addendum de priva
 
 - [ ] Integración **Cloudflare Turnstile** en frontend + verificación en API
 - [x] Páginas legales (`/privacidad`, `/terminos`, `/cookies`) — completar `siteLegal.ts`
-- [ ] Webhook Khipu → base de datos + panel de transparencia
+- [x] Webhook Khipu → Supabase + libro de transparencia en vivo
+- [ ] Historial de **gastos** con comprobantes (solo ingresos implementados)
 - [ ] Tests e2e del flujo de donación (mock Khipu)
 - [ ] i18n (es/en)
 
