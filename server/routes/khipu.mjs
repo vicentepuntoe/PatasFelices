@@ -51,12 +51,24 @@ export function createKhipuRouter(config, khipu, donations) {
       const result = await khipu.createPayment(payload)
 
       if (!result.ok) {
+        const khipuMessage =
+          typeof result.data?.message === 'string'
+            ? result.data.message
+            : typeof result.data?.error === 'string'
+              ? result.data.error
+              : null
         console.error('Khipu create payment failed', {
           status: result.status,
-          paymentError: result.data?.message ?? result.data?.error ?? 'unknown',
+          paymentError: khipuMessage ?? result.data ?? 'unknown',
         })
+        const clientHint =
+          result.status === 401 || result.status === 403
+            ? 'Revisa KHIPU_RECEIVER_ID y KHIPU_SECRET en el servidor.'
+            : 'Revisa el monto e inténtalo de nuevo.'
         res.status(mapKhipuErrorStatus(result.status)).json({
-          error: 'No pudimos iniciar el pago con Khipu. Revisa el monto e inténtalo de nuevo.',
+          error: khipuMessage
+            ? `Khipu: ${khipuMessage}`
+            : `No pudimos iniciar el pago con Khipu. ${clientHint}`,
         })
         return
       }

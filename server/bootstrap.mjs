@@ -9,6 +9,7 @@ export function createPatasFelicesApi() {
   const khipu = createKhipuClient({
     receiverId: config.receiverId,
     secret: config.secret,
+    apiBaseUrl: config.khipuApiBaseUrl,
   })
   const donations = createDonationStore(config)
   const app = createApp(config, khipu, donations)

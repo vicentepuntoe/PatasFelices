@@ -19,14 +19,21 @@ function resolveAppUrl() {
   return DEFAULT_APP_URL
 }
 
+function resolveKhipuApiBase() {
+  const raw = process.env.KHIPU_API_BASE_URL?.trim().replace(/\/$/, '')
+  return raw || 'https://khipu.com/api/2.0'
+}
+
 export function loadConfig() {
   const appUrl = resolveAppUrl()
   const port = parsePositiveInt(process.env.KHIPU_API_PORT, DEFAULT_PORT)
   const minAmount = parsePositiveInt(process.env.KHIPU_MIN_AMOUNT, DEFAULT_MIN_AMOUNT)
   const maxAmount = parsePositiveInt(process.env.KHIPU_MAX_AMOUNT, DEFAULT_MAX_AMOUNT)
 
-  const receiverId = process.env.KHIPU_RECEIVER_ID?.trim() || ''
-  const secret = process.env.KHIPU_SECRET?.trim() || ''
+  const receiverId =
+    process.env.KHIPU_RECEIVER_ID?.trim().replace(/^["']|["']$/g, '') || ''
+  const secret =
+    process.env.KHIPU_SECRET?.trim().replace(/^["']|["']$/g, '').replace(/\s+/g, '') || ''
   let notifyUrl = process.env.KHIPU_NOTIFY_URL?.trim() || ''
   if (!notifyUrl && process.env.VERCEL && appUrl.startsWith('https://')) {
     notifyUrl = `${appUrl}/api/khipu/notify`
@@ -58,6 +65,7 @@ export function loadConfig() {
     receiverId,
     secret,
     notifyUrl,
+    khipuApiBaseUrl: resolveKhipuApiBase(),
     khipuConfigured: Boolean(receiverId && secret),
     supabaseUrl,
     supabaseServiceRoleKey,

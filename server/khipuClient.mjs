@@ -1,6 +1,11 @@
-const KHIPU_PAYMENTS_URL = 'https://payment-api.khipu.com/v2/payments'
+const DEFAULT_KHIPU_API_BASE = 'https://khipu.com/api/2.0'
 
-export function createKhipuClient({ receiverId, secret }) {
+export function createKhipuClient({
+  receiverId,
+  secret,
+  apiBaseUrl = DEFAULT_KHIPU_API_BASE,
+}) {
+  const paymentsUrl = `${apiBaseUrl}/payments`
   function assertConfigured() {
     if (!receiverId || !secret) {
       const err = new Error('Khipu no está configurado en el servidor.')
@@ -18,7 +23,7 @@ export function createKhipuClient({ receiverId, secret }) {
   async function createPayment(payload) {
     assertConfigured()
 
-    const response = await fetch(KHIPU_PAYMENTS_URL, {
+    const response = await fetch(paymentsUrl, {
       method: 'POST',
       headers: {
         Authorization: authHeader(),
@@ -41,7 +46,7 @@ export function createKhipuClient({ receiverId, secret }) {
   async function getPayment(paymentId) {
     assertConfigured()
 
-    const response = await fetch(`${KHIPU_PAYMENTS_URL}/${encodeURIComponent(paymentId)}`, {
+    const response = await fetch(`${paymentsUrl}/${encodeURIComponent(paymentId)}`, {
       method: 'GET',
       headers: {
         Authorization: authHeader(),
