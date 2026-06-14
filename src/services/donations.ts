@@ -9,6 +9,14 @@ export type LiveDonationsSnapshot = {
 
 export async function fetchLiveDonations(): Promise<LiveDonationsSnapshot> {
   const response = await fetch('/api/donations')
+  const contentType = response.headers.get('content-type') ?? ''
+
+  if (!contentType.includes('application/json')) {
+    throw new Error(
+      'La API de donaciones no respondió. Reinicia con npm run dev y abre http://localhost:5173.',
+    )
+  }
+
   const data = await response.json()
 
   if (!response.ok) {

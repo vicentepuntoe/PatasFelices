@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently -n web,api -c green,yellow \"vite\" \"node server/index.mjs\"",
+    "dev": "vite",
+    "dev:all": "concurrently -n web,api -c green,yellow \"vite\" \"node server/index.mjs\"",
     "dev:web": "vite",
     "dev:api": "node server/index.mjs",
     "build": "tsc -b && vite build",

@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { createDonationStore } from './donations/store.mjs'
 import { loadConfig } from './config.mjs'
 import { createKhipuClient } from './khipuClient.mjs'
