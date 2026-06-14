@@ -1,3 +1,4 @@
+import { createDonationStore } from './donations/store.mjs'
 import { loadConfig } from './config.mjs'
 import { createKhipuClient } from './khipuClient.mjs'
 import { createApp } from './app.mjs'
@@ -8,6 +9,7 @@ export function createPatasFelicesApi() {
     receiverId: config.receiverId,
     secret: config.secret,
   })
-  const app = createApp(config, khipu)
-  return { app, config }
+  const donations = createDonationStore(config)
+  const app = createApp(config, khipu, donations)
+  return { app, config, donations }
 }

@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import { registerFromKhipuNotifyBody, registerConfirmedPayment } from '../donations/register.mjs'
 import { validateCreatePaymentBody } from '../validatePaymentInput.mjs'
 
 function mapKhipuErrorStatus(upstreamStatus) {
@@ -13,7 +14,7 @@ function publicErrorMessage(err) {
   return 'No pudimos iniciar el pago. Intenta de nuevo en unos minutos.'
 }
 
-export function createKhipuRouter(config, khipu) {
+export function createKhipuRouter(config, khipu, donations) {
   const router = Router()
 
   router.post('/payments', async (req, res) => {
@@ -72,18 +73,42 @@ export function createKhipuRouter(config, khipu) {
     }
   })
 
-  router.post('/notify', (req, res) => {
-    const body = req.body ?? {}
-    const paymentId = body.payment_id ?? body.paymentId
-    const status = body.status
-
-    if (paymentId) {
-      console.info('Khipu notify received', { paymentId, status })
-    } else {
-      console.warn('Khipu notify received without payment_id')
+  router.post('/notify', async (req, res) => {
+    try {
+      const outcome = await registerFromKhipuNotifyBody(donations, khipu, req.body ?? {})
+      if (outcome.registered) {
+        console.info('Donation registered from webhook', {
+          paymentId: outcome.donation?.khipuPaymentId,
+        })
+      }
+    } catch (err) {
+      console.error('Webhook register error', err instanceof Error ? err.message : err)
     }
 
     res.status(200).json({ received: true })
+  })
+
+  router.post('/payments/:paymentId/register', async (req, res) => {
+    const paymentId = String(req.params.paymentId ?? '').trim()
+    if (!paymentId || paymentId.length > 64) {
+      res.status(400).json({ error: 'Identificador de pago inválido.' })
+      return
+    }
+
+    try {
+      const outcome = await registerConfirmedPayment(donations, khipu, paymentId)
+      if (!outcome.registered) {
+        res.status(409).json({
+          error: 'El pago aún no está confirmado en Khipu.',
+          reason: outcome.reason,
+        })
+        return
+      }
+      res.json({ ok: true, donation: outcome.donation })
+    } catch (err) {
+      console.error('Register donation error', err instanceof Error ? err.message : err)
+      res.status(503).json({ error: 'No pudimos registrar la donación.' })
+    }
   })
 
   router.get('/payments/:paymentId', async (req, res) => {

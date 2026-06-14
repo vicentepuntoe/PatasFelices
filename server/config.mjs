@@ -27,7 +27,13 @@ export function loadConfig() {
 
   const receiverId = process.env.KHIPU_RECEIVER_ID?.trim() || ''
   const secret = process.env.KHIPU_SECRET?.trim() || ''
-  const notifyUrl = process.env.KHIPU_NOTIFY_URL?.trim() || ''
+  let notifyUrl = process.env.KHIPU_NOTIFY_URL?.trim() || ''
+  if (!notifyUrl && process.env.VERCEL && appUrl.startsWith('https://')) {
+    notifyUrl = `${appUrl}/api/khipu/notify`
+  }
+
+  const supabaseUrl = process.env.SUPABASE_URL?.trim() || ''
+  const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || ''
 
   const allowedOrigins = new Set([
     appUrl,
@@ -50,6 +56,9 @@ export function loadConfig() {
     secret,
     notifyUrl,
     khipuConfigured: Boolean(receiverId && secret),
+    supabaseUrl,
+    supabaseServiceRoleKey,
+    donationsLive: Boolean(supabaseUrl && supabaseServiceRoleKey),
     allowedOrigins: [...allowedOrigins],
   }
 }

@@ -1,9 +1,10 @@
 import express from 'express'
 import { createCorsMiddleware } from './middleware/cors.mjs'
 import { createRateLimiter } from './middleware/rateLimit.mjs'
+import { createDonationsRouter } from './routes/donations.mjs'
 import { createKhipuRouter } from './routes/khipu.mjs'
 
-export function createApp(config, khipu) {
+export function createApp(config, khipu, donations) {
   const app = express()
   app.set('trust proxy', 1)
 
@@ -16,10 +17,12 @@ export function createApp(config, khipu) {
     res.json({
       ok: true,
       khipuConfigured: config.khipuConfigured,
+      donationsLive: donations.configured,
     })
   })
 
-  app.use('/api/khipu', paymentRateLimit, createKhipuRouter(config, khipu))
+  app.use('/api/donations', createDonationsRouter(donations))
+  app.use('/api/khipu', paymentRateLimit, createKhipuRouter(config, khipu, donations))
 
   app.use((_req, res) => {
     res.status(404).json({ error: 'Ruta no encontrada.' })
